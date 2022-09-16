@@ -12,23 +12,12 @@ parameters:
   - SaradaJagarlamudi/Test
   - SaradaJagarlamudi/SaradaJagarlamudi
 
-variables:
-- name: reponame
-  value: ${{ parameters.reponame }}
 
-resources:
-  repositories:
-    - repository: Reponame
-      type: git
-      name: ${{ parameters.reponame }}
-pool:
-  vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+jobs:
+- job: build
+  displayName: build
+  pool: 
+    vmImage: ${{ parameters.reponame }}
+  steps:
+  - script: echo building $(Build.BuildNumber) with ${{ parameters.reponame }}
