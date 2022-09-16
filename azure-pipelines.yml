@@ -6,15 +6,21 @@ parameters:
 - name: reponame
   displayName: Reponame
   type: string
+  default: ubuntu-latest
+  values:
+  - windows-latest
+  - ubuntu-latest
+  - macOS-latest
 
 variables:
 - name: reponame
-  value: ${{parameters.reponame}}
+  value: ${{ parameters.reponame }}
+
 resources:
   repositories:
-    - repository: Repo
+    - repository: Reponame
       type: git
-      name: ${{parameters.reponame}}
+      name: ${{ parameters.reponame }}
 pool:
   vmImage: ubuntu-latest
 
