@@ -12,6 +12,8 @@ parameters:
   - SaradaJagarlamudi/Test
   - SaradaJagarlamudi/SaradaJagarlamudi
 
+pool:
+  vmImage: ubuntu-latest
 
 
 jobs:
