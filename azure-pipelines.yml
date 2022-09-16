@@ -15,7 +15,6 @@ resources:
     - repository: Repo
       type: git
       name: ${{parameters.reponame}}
-
 pool:
   vmImage: ubuntu-latest
 
