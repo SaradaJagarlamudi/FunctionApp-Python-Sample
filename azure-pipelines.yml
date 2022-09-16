@@ -15,10 +15,12 @@ parameters:
 resources:
   repositories:
     - repository: Functionapp2
-      type: git
+      type: github
+      endpoint: github.com_SaradaJagarlamudi
       name: SaradaJagarlamudi/FunctionApp-Python-Sample
     - repository: Functionapp1
-      type: git
+      type: github
+      endpoint: github.com_SaradaJagarlamudi
       name: SaradaJagarlamudi/Test
 pool:
   vmImage: ubuntu-latest
