@@ -10,8 +10,6 @@ parameters:
 variables:
 - name: reponame
   value: ${{parameters.reponame}}
-
- 
 resources:
   repositories:
     - repository: Repo
