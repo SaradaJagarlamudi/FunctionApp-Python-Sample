@@ -9,14 +9,14 @@ parameters:
 
 variables:
 - name: reponame
-  value: ${{ parameters.reponame }}
+  value: ${{parameters.reponame}}
 
  
 resources:
   repositories:
     - repository: Repo
       type: git
-      name: ${{ parameters.reponame }}
+      name: ${{parameters.reponame}}
 
 pool:
   vmImage: ubuntu-latest
