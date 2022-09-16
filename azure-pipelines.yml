@@ -1,0 +1,31 @@
+trigger:
+- none
+
+
+parameters:
+- name: reponame
+  displayName: Reponame
+  type: string
+
+variables:
+- name: reponame
+  value: ${{ parameters.reponame }}
+
+ 
+resources:
+  repositories:
+    - repository: Repo
+      type: git
+      name: ${{ parameters.reponame }}
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
