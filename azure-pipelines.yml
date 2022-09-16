@@ -12,8 +12,16 @@ parameters:
   - SaradaJagarlamudi/Test
   - SaradaJagarlamudi/SaradaJagarlamudi
 
+resources:
+  repositories:
+    - repository: Reponame
+      type: git
+      name: ${{ parameters.reponame }}
+
+
 pool:
   vmImage: ubuntu-latest
+  
 
 
 steps:
