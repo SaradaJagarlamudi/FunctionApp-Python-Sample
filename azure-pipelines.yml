@@ -6,11 +6,11 @@ parameters:
 - name: reponame
   displayName: Reponame
   type: string
-  default: ubuntu-latest
+  default: SaradaJagarlamudi/FunctionApp-Python-Sample
   values:
-  - windows-latest
-  - ubuntu-latest
-  - macOS-latest
+  - SaradaJagarlamudi/FunctionApp-Python-Sample
+  - SaradaJagarlamudi/Test
+  - SaradaJagarlamudi/SaradaJagarlamudi
 
 variables:
 - name: reponame
