@@ -55,7 +55,7 @@ variables:
     value: UATSC
 stages:
   - stage: Build
-    condition: ${{ if or(eq( Parameters.Action ), 'Build','Build and Deploy')) }}
+    condition: ${{ if or(eq( Parameters.Action , 'Build'), eq( Parameters.Action , 'Build and Deploy')) }}
     jobs:
     - deployment: 
       # pool:
@@ -75,7 +75,7 @@ stages:
               - task: Bash@3
                 inputs:
                   targetType: 'inline'
-                  script: |
+                  script: 
                     python -m venv antenv
                     source antenv/bin/activate
                     python -m pip install --upgrade pip
