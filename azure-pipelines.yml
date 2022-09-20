@@ -41,11 +41,11 @@ variables:
    value: ${{parameters.reponame}}
  - name: FunctionAppName
    ${{ if eq( Parameters.Environment , 'Dev') }}:
-   value: DevApp
+    value: DevApp
    ${{ if eq( Parameters.Environment, 'QA') }}:
-   value: QAApp
+    value: QAApp
    ${{ if eq( Parameters.Environment, 'UAT') }}:
-   value: UATApp
+    value: UATApp
  - name: azureServiceConnection
    ${{ if eq( Parameters.Environment , 'Dev') }}:
    value: DevSC
