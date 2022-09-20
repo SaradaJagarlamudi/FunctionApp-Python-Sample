@@ -56,7 +56,7 @@ variables:
 stages:
   - stage: Build
     condition:
-     if or(eq( Parameters.Action , 'Build'), eq( Parameters.Action , 'Build and Deploy'))
+     ${{ if or(eq( Parameters.Action , 'Build'), eq( Parameters.Action , 'Build and Deploy')) }}
     jobs:
     - deployment: 
       # pool:
