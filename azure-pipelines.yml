@@ -6,7 +6,7 @@ parameters:
 - name: reponame
   displayName: Reponame
   type: string
-  default: SaradaJagarlamudi/FunctionApp-Python-Sample
+  default: Functionapp1
 
 
 resources:
