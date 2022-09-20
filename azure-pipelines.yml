@@ -9,16 +9,16 @@ parameters:
   default: SaradaJagarlamudi/FunctionApp-Python-Sample
 
 
-# resources:
-#   repositories:
-#     - repository: Functionapp2
-#       type: github
-#       endpoint: github.com_SaradaJagarlamudi
-#       name: SaradaJagarlamudi/FunctionApp-Python-Sample
-#     - repository: Functionapp1
-#       type: github
-#       endpoint: github.com_SaradaJagarlamudi
-#       name: SaradaJagarlamudi/Test
+resources:
+  repositories:
+    - repository: Functionapp2
+      type: github
+      endpoint: github.com_SaradaJagarlamudi
+      name: SaradaJagarlamudi/FunctionApp-Python-Sample
+    - repository: Functionapp1
+      type: github
+      endpoint: github.com_SaradaJagarlamudi
+      name: SaradaJagarlamudi/Test
 pool:
   vmImage: ubuntu-latest
   
@@ -26,8 +26,8 @@ pool:
 
 steps:
 
-- checkout: git://SaradaJagarlamudi/${{parameters.reponame}}
-  displayName: 'Checkout ${{parameters.reponame}}'
+# - checkout: git://SaradaJagarlamudi/${{parameters.reponame}}
+#   displayName: 'Checkout ${{parameters.reponame}}'
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.x'
