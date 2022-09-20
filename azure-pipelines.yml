@@ -100,7 +100,7 @@ stages:
 
   - stage: Deploy
     condition: 
-     ${{ if eq( Parameters.Action, 'Build and Deploy') }}
+     if eq( Parameters.Action, 'Build and Deploy')
     jobs:
     - deployment: 
       # pool:
