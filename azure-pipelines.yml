@@ -1,60 +1,117 @@
-trigger:
-- none
+trigger: none
 
-
-parameters:
-- name: reponame
-  displayName: Reponame
-  type: string
-  default: Functionapp1
-
+pool:
+  vmImage: windows-latest
 
 resources:
   repositories:
-    - repository: Functionapp2
-      type: github
-      endpoint: github.com_SaradaJagarlamudi
-      name: SaradaJagarlamudi/FunctionApp-Python-Sample
-    - repository: Functionapp1
-      type: github
-      endpoint: github.com_SaradaJagarlamudi
-      name: SaradaJagarlamudi/Test
-pool:
-  vmImage: ubuntu-latest
-  
+  - repository: petrol-calculator-backend
+    type: github
+    endpoint: Grenston_github
+    name: Grenston/petrol-calculator-backend
+
+  - repository: contoso-air
+    type: github
+    endpoint: Grenston_github
+    name: Grenston/contoso-air
+
+parameters:
+- name: reponame
+  displayName: Name of the repository
+  values:
+  - petrol-calculator-backend
+  - contoso-air
+
+- name: Action
+  default: Build
+  values:
+  - Build
+  - Build and Deploy
+
+- name: Environment
+  displayName: Environment
+  values:
+    - Dev
+    - QA
+    - UAT
+
+variables:
+ - name: Reponame
+   value: ${{parameters.reponame}}
+ - name: FunctionAppName
+   ${{ if eq("${{ parameters.Environment }}", 'Dev') }}:
+   value: DevApp
+   ${{ if eq("${{ parameters.Environment }}", 'QA') }}:
+   value: QAApp
+   ${{ if eq("${{ parameters.Environment }}", 'UAT') }}:
+   value: UATApp
+ - name: azureServiceConnection
+   ${{ if eq("${{ parameters.Environment }}", 'Dev') }}:
+   value: DevSC
+   ${{ if eq("${{ parameters.Environment }}", 'QA') }}:
+   value: QASC
+   ${{ if eq("${{ parameters.Environment }}", 'UAT') }}:
+   value: UATSC
+stages:
+  - stage: Build
+    condition:  ${{ if or(eq("${{ parameters.Action }}", 'Build'), eq("${{ parameters.Action }}", 'Build and Deploy')) }}
+    jobs:
+    - deployment: 
+      # pool:
+      #   vmImage: windows-latest
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - checkout: ${{parameters.reponame}}
+                displayName: 'Checkout ${{parameters.reponame}}'
+              - task: UsePythonVersion@0
+                inputs:
+                  versionSpec: '3.x'
+                  addToPath: true
+                  architecture: 'x64'
+              
+              - task: Bash@3
+                inputs:
+                  targetType: 'inline'
+                  script: |
+                    python -m venv antenv
+                    source antenv/bin/activate
+                    python -m pip install --upgrade pip
+                    pip install setup
+                    pip install -r requirements.txt
+                  workingDirectory: $(projectRoot)
+                displayName: "Install requirements"
+              - task: ArchiveFiles@2
+                inputs:
+                  rootFolderOrFile: '$(Build.SourcesDirectory)'
+                  includeRootFolder: true
+                  archiveType: 'zip'
+                  archiveFile: '$(Build.ArtifactStagingDirectory)/${{parameters.reponame}}.zip'
+                  replaceExistingArchive: true
+              
+              - task: PublishBuildArtifacts@1
+                inputs:
+                  PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+                  ArtifactName: 'drop'
+                  publishLocation: 'Container'
+
+  - stage: Deploy
+    condition:  ${{ if eq("${{ parameters.Action }}", 'Build and Deploy')) }}
+    jobs:
+    - deployment: 
+      # pool:
+      #   vmImage: windows-latest
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: AzureWebApp@1
+              displayName: 'Deploy Azure Function App : {{ FunctionAppName }}'
+              inputs:
+                azureSubscription: $(azureServiceConnection)
+                appType: 'functionapp'
+                appName: $(FunctionAppName)
+                package: '$(Build.ArtifactStagingDirectory)/${{parameters.reponame}}.zip'
 
 
-steps:
-
-# - checkout: git://SaradaJagarlamudi/${{parameters.reponame}}
-#   displayName: 'Checkout ${{parameters.reponame}}'
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.x'
-    addToPath: true
-    architecture: 'x64'
-
-
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      python -m venv antenv
-      source antenv/bin/activate
-      python -m pip install --upgrade pip
-      pip install setup
-      pip install -r requirements.txt
-
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
