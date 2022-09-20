@@ -26,7 +26,7 @@ pool:
 
 steps:
 
-- checkout: git://$(System.TeamProject)/${{parameters.reponame}}
+- checkout: git://github.com/SaradaJagarlamudi/${{parameters.reponame}}
   displayName: 'Checkout ${{parameters.reponame}}'
 - task: UsePythonVersion@0
   inputs:
