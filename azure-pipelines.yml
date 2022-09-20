@@ -98,7 +98,7 @@ stages:
                   publishLocation: 'Container'
 
   - stage: Deploy
-    condition:  ${{ if eq( parameters.Action, 'Build and Deploy') }}
+    condition:  ${{ if eq( Parameters.Action, 'Build and Deploy') }}
     jobs:
     - deployment: 
       # pool:
