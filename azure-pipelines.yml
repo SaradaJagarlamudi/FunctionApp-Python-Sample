@@ -40,7 +40,7 @@ variables:
  - name: Reponame
    value: ${{parameters.reponame}}
  - name: FunctionAppName
-   ${{ if eq(${{ Parameters.Environment }}, 'Dev') }}:
+   ${{ if eq( Parameters.Environment , 'Dev') }}:
    value: DevApp
    ${{ if eq("${{ parameters.Environment }}", 'QA') }}:
    value: QAApp
