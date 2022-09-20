@@ -48,11 +48,11 @@ variables:
     value: UATApp
  - name: azureServiceConnection
    ${{ if eq( Parameters.Environment , 'Dev') }}:
-   value: DevSC
+    value: DevSC
    ${{ if eq(Parameters.Environment, 'QA') }}:
-   value: QASC
+    value: QASC
    ${{ if eq( Parameters.Environment, 'UAT') }}:
-   value: UATSC
+    value: UATSC
 stages:
   - stage: Build
     condition:  ${{ if or(eq("${{ parameters.Action }}", 'Build'), eq("${{ parameters.Action }}", 'Build and Deploy')) }}
