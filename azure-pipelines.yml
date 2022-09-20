@@ -42,16 +42,16 @@ variables:
  - name: FunctionAppName
    ${{ if eq( Parameters.Environment , 'Dev') }}:
    value: DevApp
-   ${{ if eq("${{ parameters.Environment }}", 'QA') }}:
+   ${{ if eq( parameters.Environment, 'QA') }}:
    value: QAApp
-   ${{ if eq("${{ parameters.Environment }}", 'UAT') }}:
+   ${{ if eq( parameters.Environment, 'UAT') }}:
    value: UATApp
  - name: azureServiceConnection
-   ${{ if eq("${{ parameters.Environment }}", 'Dev') }}:
+   ${{ if eq( parameters.Environment , 'Dev') }}:
    value: DevSC
-   ${{ if eq("${{ parameters.Environment }}", 'QA') }}:
+   ${{ if eq(parameters.Environment, 'QA') }}:
    value: QASC
-   ${{ if eq("${{ parameters.Environment }}", 'UAT') }}:
+   ${{ if eq( parameters.Environment, 'UAT') }}:
    value: UATSC
 stages:
   - stage: Build
