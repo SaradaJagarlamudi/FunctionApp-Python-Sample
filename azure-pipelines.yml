@@ -5,22 +5,23 @@ pool:
 
 resources:
   repositories:
-  - repository: petrol-calculator-backend
-    type: github
-    endpoint: Grenston_github
-    name: Grenston/petrol-calculator-backend
+    - repository: Functionapp2
+      type: github
+      endpoint: github.com_SaradaJagarlamudi
+      name: SaradaJagarlamudi/FunctionApp-Python-Sample
+      
+    - repository: Functionapp1
+      type: github
+      endpoint: github.com_SaradaJagarlamudi
+      name: SaradaJagarlamudi/Test
 
-  - repository: contoso-air
-    type: github
-    endpoint: Grenston_github
-    name: Grenston/contoso-air
 
 parameters:
 - name: reponame
   displayName: Name of the repository
   values:
-  - petrol-calculator-backend
-  - contoso-air
+  - Functionapp1
+  - Functionapp2
 
 - name: Action
   default: Build
@@ -106,12 +107,13 @@ stages:
         runOnce:
           deploy:
             steps:
-            - task: AzureWebApp@1
+            - task: AzureRmWebAppDeployment@4
               displayName: 'Deploy Azure Function App : {{ FunctionAppName }}'
               inputs:
                 azureSubscription: $(azureServiceConnection)
-                appType: 'functionapp'
-                appName: $(FunctionAppName)
+                appType: functionAppLinux
+                WebappName: $(FunctionAppName)
                 package: '$(Build.ArtifactStagingDirectory)/${{parameters.reponame}}.zip'
+                RuntimeStackFunction: 'PYTHON|3.6'
 
 
