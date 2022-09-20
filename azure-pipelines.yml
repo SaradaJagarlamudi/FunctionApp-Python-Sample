@@ -99,7 +99,7 @@ stages:
                   publishLocation: 'Container'
 
   - stage: Deploy
-    condition: ${{if eq(Parameters.Action,'Build and Deploy')}}
+    condition: ${{if eq(Parameters.Action,'BuildandDeploy')}}
     jobs:
     - deployment: 
       # pool:
@@ -112,7 +112,7 @@ stages:
               displayName: 'Deploy Azure Function App : {{ FunctionAppName }}'
               inputs:
                 azureSubscription: $(azureServiceConnection)
-                appType: functionAppLinux
+                appType: FunctionAppLinux
                 WebappName: $(FunctionAppName)
                 package: '$(Build.ArtifactStagingDirectory)/${{parameters.reponame}}.zip'
                 RuntimeStackFunction: 'PYTHON|3.6'
