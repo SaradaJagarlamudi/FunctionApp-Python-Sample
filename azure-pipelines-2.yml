@@ -1,0 +1,121 @@
+trigger: none
+
+pool:
+  vmImage: windows-latest
+
+resources:
+  repositories:
+    - repository: Functionapp2
+      type: github
+      endpoint: github.com_SaradaJagarlamudi
+      name: SaradaJagarlamudi/FunctionApp-Python-Sample
+      
+    - repository: Functionapp1
+      type: github
+      endpoint: github.com_SaradaJagarlamudi
+      name: SaradaJagarlamudi/Test
+
+
+parameters:
+- name: reponame
+  displayName: Name of the repository
+  values:
+  - Functionapp1
+  - Functionapp2
+
+- name: Action
+  default: Build
+  values:
+  - Build
+  - Build and Deploy
+
+- name: Environment
+  displayName: Environment
+  values:
+    - Dev
+    - QA
+    - UAT
+
+variables:
+ - name: Reponame
+   value: ${{parameters.reponame}}
+ - name: FunctionAppName
+   ${{ if eq( Parameters.Environment , 'Dev') }}:
+    value: DevApp
+   ${{ if eq( Parameters.Environment, 'QA') }}:
+    value: QAApp
+   ${{ if eq( Parameters.Environment, 'UAT') }}:
+    value: UATApp
+ - name: azureServiceConnection
+   ${{ if eq( Parameters.Environment , 'Dev') }}:
+    value: DevSC
+   ${{ if eq(Parameters.Environment, 'QA') }}:
+    value: QASC
+   ${{ if eq( Parameters.Environment, 'UAT') }}:
+    value: UATSC
+stages:
+  - stage: Build
+    #condition:  if or(eq( parameters.Action, 'Build'), eq(parameters.Action, 'Build and Deploy'))
+
+    jobs:
+    - deployment: 
+      environment: Dev
+      # pool:
+      #   vmImage: windows-latest
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - checkout: ${{parameters.reponame}}
+                displayName: 'Checkout ${{parameters.reponame}}'
+              - task: UsePythonVersion@0
+                inputs:
+                  versionSpec: '3.x'
+                  addToPath: true
+                  architecture: 'x64'
+              
+              # - task: Bash@3
+              #   inputs:
+              #     targetType: 'inline'
+              #     script: 
+              #       python -m venv antenv
+              #       source antenv/bin/activate
+              #       python -m pip install --upgrade pip
+              #       pip install setup
+              #       pip install -r requirements.txt
+              #     workingDirectory: $(System.DefaultWorkingDirectory)
+              #   displayName: "Install requirements"
+              - task: ArchiveFiles@2
+                inputs:
+                  rootFolderOrFile: '$(Build.SourcesDirectory)'
+                  includeRootFolder: true
+                  archiveType: 'zip'
+                  archiveFile: '$(Build.ArtifactStagingDirectory)/${{parameters.reponame}}.zip'
+                  replaceExistingArchive: true
+              
+              - task: PublishBuildArtifacts@1
+                inputs:
+                  PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+                  ArtifactName: 'drop'
+                  publishLocation: 'Container'
+
+  # - stage: Deploy
+  #   #condition: if eq(Parameters.Action,'BuildandDeploy')
+  #   jobs:
+  #   - deployment: 
+  #     # pool:
+  #     #   vmImage: windows-latest
+  #     strategy:
+  #       runOnce:
+  #         deploy:
+  #           steps:
+  #           - task: AzureRmWebAppDeployment@4
+  #             displayName: 'Deploy Azure Function App : {{ FunctionAppName }}'
+  #             inputs:
+  #               azureSubscription: $(azureServiceConnection)
+  #               appType: FunctionAppLinux
+  #               WebappName: $(FunctionAppName)
+  #               package: '$(Build.ArtifactStagingDirectory)/${{parameters.reponame}}.zip'
+  #               RuntimeStackFunction: 'PYTHON|3.6'
+
+
