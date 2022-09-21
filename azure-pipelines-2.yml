@@ -21,6 +21,7 @@ resources:
 parameters:
 - name: reponame
   displayName: Name of the repository
+  default: Functionapp2
   values:
   - Functionapp1
   - Functionapp2
@@ -33,6 +34,7 @@ parameters:
 
 - name: Environment
   displayName: Environment
+  default: Dev
   values:
     - Dev
     - QA
