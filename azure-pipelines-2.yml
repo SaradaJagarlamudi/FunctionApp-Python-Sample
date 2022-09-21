@@ -1,5 +1,7 @@
-trigger: none
-
+trigger: 
+ branches:
+   include:
+     - master
 pool:
   vmImage: windows-latest
 
