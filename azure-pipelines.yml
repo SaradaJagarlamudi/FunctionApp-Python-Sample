@@ -55,7 +55,7 @@ variables:
     value: UATSC
 stages:
   - stage: Build
-    condition: ${{ if or(eq( parameters.Action, 'Build'), eq(parameters.Action, 'Build and Deploy')) }}
+    condition:  if or(eq( parameters.Action, 'Build'), eq(parameters.Action, 'Build and Deploy'))
 
     jobs:
     - deployment: 
