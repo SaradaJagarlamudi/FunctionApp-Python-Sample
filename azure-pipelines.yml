@@ -1,4 +1,7 @@
-trigger: none
+trigger: 
+ branches:
+   include:
+     - master
 
 pool:
   vmImage: windows-latest
@@ -19,9 +22,10 @@ resources:
 parameters:
 - name: reponame
   displayName: Name of the repository
+  default: Functionapp2
   values:
-  - Functionapp1
-  - Functionapp2
+   - Functionapp1
+   - Functionapp2
 
 - name: Action
   default: Build
@@ -31,6 +35,7 @@ parameters:
 
 - name: Environment
   displayName: Environment
+  default: Dev
   values:
     - Dev
     - QA
