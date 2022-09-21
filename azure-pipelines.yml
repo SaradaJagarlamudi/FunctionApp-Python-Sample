@@ -99,7 +99,7 @@ stages:
                   publishLocation: 'Container'
 
   - stage: Deploy
-    condition: if eq(Parameters.Action,'BuildandDeploy')
+    #condition: if eq(Parameters.Action,'BuildandDeploy')
     jobs:
     - deployment: 
       # pool:
