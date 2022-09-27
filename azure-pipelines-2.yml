@@ -18,13 +18,13 @@ pool:
 #       name: SaradaJagarlamudi/Test
 
 
-# parameters:
-# - name: reponame
-#   displayName: Name of the repository
-#   default: Functionapp2
-#   values:
-#   - Functionapp1
-#   - Functionapp2
+parameters:
+- name: reponame
+  displayName: Name of the repository
+  default: FunctionApp-Python-Sample
+  values:
+  - FunctionApp-Python-Sample
+  - Functionapp2
 
 # - name: Action
 #   default: Build
@@ -76,7 +76,10 @@ stages:
               - task: Bash@3
                 inputs:
                   targetType: 'inline'
-                  script: 'git clone https://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@github.com/SaradaJagarlamudi/FunctionApp-Python-Sample.git $(System.DefaultWorkingDirectory)'
+                  script: | 
+                   git clone https://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@github.com/SaradaJagarlamudi/${{parameters.reponame}}.git $(Build.SourcesDirectory)
+                   pwd
+                   ls
               - task: UsePythonVersion@0
                 inputs:
                   versionSpec: '3.x'
