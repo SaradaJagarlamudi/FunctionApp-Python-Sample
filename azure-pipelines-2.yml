@@ -70,8 +70,8 @@ stages:
         runOnce:
           deploy:
             steps:
-              - checkout: ${{parameters.reponame}}
-                displayName: 'Checkout ${{parameters.reponame}}'
+              # - checkout: ${{parameters.reponame}}
+              #   displayName: 'Checkout ${{parameters.reponame}}'
             
               - task: Bash@3
                 inputs:
@@ -99,7 +99,7 @@ stages:
                   rootFolderOrFile: '$(Build.SourcesDirectory)'
                   includeRootFolder: true
                   archiveType: 'zip'
-                  archiveFile: '$(Build.ArtifactStagingDirectory)/${{parameters.reponame}}.zip'
+                  archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildID).zip'
                   replaceExistingArchive: true
               
               - task: PublishBuildArtifacts@1
