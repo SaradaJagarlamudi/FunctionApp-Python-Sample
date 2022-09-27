@@ -5,58 +5,58 @@ trigger:
 pool:
   vmImage: windows-latest
 
-resources:
-  repositories:
-    - repository: Functionapp2
-      type: github
-      endpoint: github.com_SaradaJagarlamudi
-      name: SaradaJagarlamudi/FunctionApp-Python-Sample
+# resources:
+#   repositories:
+#     - repository: Functionapp2
+#       type: github
+#       endpoint: github.com_SaradaJagarlamudi
+#       name: SaradaJagarlamudi/FunctionApp-Python-Sample
       
-    - repository: Functionapp1
-      type: github
-      endpoint: github.com_SaradaJagarlamudi
-      name: SaradaJagarlamudi/Test
+#     - repository: Functionapp1
+#       type: github
+#       endpoint: github.com_SaradaJagarlamudi
+#       name: SaradaJagarlamudi/Test
 
 
-parameters:
-- name: reponame
-  displayName: Name of the repository
-  default: Functionapp2
-  values:
-  - Functionapp1
-  - Functionapp2
+# parameters:
+# - name: reponame
+#   displayName: Name of the repository
+#   default: Functionapp2
+#   values:
+#   - Functionapp1
+#   - Functionapp2
 
-- name: Action
-  default: Build
-  values:
-  - Build
-  - Build and Deploy
+# - name: Action
+#   default: Build
+#   values:
+#   - Build
+#   - Build and Deploy
 
-- name: Environment
-  displayName: Environment
-  default: Dev
-  values:
-    - Dev
-    - QA
-    - UAT
+# - name: Environment
+#   displayName: Environment
+#   default: Dev
+#   values:
+#     - Dev
+#     - QA
+#     - UAT
 
-variables:
- - name: Reponame
-   value: ${{parameters.reponame}}
- - name: FunctionAppName
-   ${{ if eq( Parameters.Environment , 'Dev') }}:
-    value: DevApp
-   ${{ if eq( Parameters.Environment, 'QA') }}:
-    value: QAApp
-   ${{ if eq( Parameters.Environment, 'UAT') }}:
-    value: UATApp
- - name: azureServiceConnection
-   ${{ if eq( Parameters.Environment , 'Dev') }}:
-    value: DevSC
-   ${{ if eq(Parameters.Environment, 'QA') }}:
-    value: QASC
-   ${{ if eq( Parameters.Environment, 'UAT') }}:
-    value: UATSC
+# variables:
+#  - name: Reponame
+#    value: ${{parameters.reponame}}
+#  - name: FunctionAppName
+#    ${{ if eq( Parameters.Environment , 'Dev') }}:
+#     value: DevApp
+#    ${{ if eq( Parameters.Environment, 'QA') }}:
+#     value: QAApp
+#    ${{ if eq( Parameters.Environment, 'UAT') }}:
+#     value: UATApp
+#  - name: azureServiceConnection
+#    ${{ if eq( Parameters.Environment , 'Dev') }}:
+#     value: DevSC
+#    ${{ if eq(Parameters.Environment, 'QA') }}:
+#     value: QASC
+#    ${{ if eq( Parameters.Environment, 'UAT') }}:
+#     value: UATSC
 stages:
   - stage: Build
     #condition:  if or(eq( parameters.Action, 'Build'), eq(parameters.Action, 'Build and Deploy'))
@@ -72,6 +72,11 @@ stages:
             steps:
               - checkout: ${{parameters.reponame}}
                 displayName: 'Checkout ${{parameters.reponame}}'
+            
+              - task: Bash@3
+                inputs:
+                  targetType: 'inline'
+                  script: 'git clone https://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@github.com/SaradaJagarlamudi/FunctionApp-Python-Sample.git $(System.DefaultWorkingDirectory)'
               - task: UsePythonVersion@0
                 inputs:
                   versionSpec: '3.x'
