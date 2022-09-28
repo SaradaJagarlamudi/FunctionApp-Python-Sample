@@ -1,22 +1,9 @@
-trigger: 
- branches:
-   include:
-     - master
+# trigger: 
+#  branches:
+#    include:
+#      - master
 pool:
   vmImage: windows-latest
-
-# resources:
-#   repositories:
-#     - repository: Functionapp2
-#       type: github
-#       endpoint: github.com_SaradaJagarlamudi
-#       name: SaradaJagarlamudi/FunctionApp-Python-Sample
-      
-#     - repository: Functionapp1
-#       type: github
-#       endpoint: github.com_SaradaJagarlamudi
-#       name: SaradaJagarlamudi/Test
-
 
 parameters:
 - name: reponame
@@ -99,7 +86,7 @@ stages:
               #   displayName: "Install requirements"
               - task: ArchiveFiles@2
                 inputs:
-                  rootFolderOrFile: '$(Build.SourcesDirectory)'
+                  rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
                   includeRootFolder: true
                   archiveType: 'zip'
                   archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildID).zip'
