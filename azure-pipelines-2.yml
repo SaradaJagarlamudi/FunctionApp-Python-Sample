@@ -8,10 +8,10 @@ pool:
 parameters:
 - name: reponame
   displayName: Name of the repository
-  default: Test
-  values:
-  - FunctionApp-Python-Sample
-  - Test
+  # default: Test
+  # values:
+  # - FunctionApp-Python-Sample
+  # - Test
 
 # - name: Action
 #   default: Build
