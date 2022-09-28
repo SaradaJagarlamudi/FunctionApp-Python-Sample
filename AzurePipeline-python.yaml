@@ -3,7 +3,8 @@ trigger:
    include:
      - master
 pool:
-  vmImage: windows-latest
+  # vmImage: windows-latest
+  vmImage: ubuntu-latest
   
 steps:
 - task: UsePythonVersion@0
